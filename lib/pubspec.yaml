@@ -1,0 +1,12 @@
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.9.0          # Embed js-ipfs
+  pointycastle: ^3.7.0             # ECDSA crypto
+  hive: ^2.2.3                     # Local storage
+  hive_flutter: ^1.1.0
+  http: ^0.12.0                    # For IPFS gateway fallback
+
+dev_dependencies:
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.9

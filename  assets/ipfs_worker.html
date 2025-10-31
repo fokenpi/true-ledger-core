@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/ipfs@0.60.0/dist/index.min.js"></script>
+</head>
+<body>
+  <script>
+    async function startIpfs() {
+      const node = await Ipfs.create({ repo: 'true-ledger-ipfs' });
+      window.ipfs = {
+        addJson: (obj) => node.add(JSON.stringify(obj)).then(r => r.cid.toString()),
+        pubsub: {
+          publish: (topic, msg) => node.pubsub.publish(topic, new TextEncoder().encode(msg)),
+          subscribe: (topic, handler) => node.pubsub.subscribe(topic, (msg) => {
+            const str = new TextDecoder().decode(msg.data);
+            handler(str);
+          })
+        }
+      };
+    }
+    startIpfs();
+  </script>
+</body>
+</html>
