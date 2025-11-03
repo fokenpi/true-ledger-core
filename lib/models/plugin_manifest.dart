@@ -1,13 +1,12 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
+// lib/models/plugin_manifest.dart
 
 class PluginManifest {
   final String name;
   final String version;
   final String description;
   final String author;
-  final String entryPoint; // e.g., "main.js"
-  final String? uiComponent; // e.g., "LedgerUI.js"
+  final String entryPoint;
+  final String? uiComponent;
   final List<String> dataTypes;
   final List<String> permissions;
   final Map<String, String> dependencies;
@@ -32,17 +31,9 @@ class PluginManifest {
       author: json['author'] as String,
       entryPoint: json['entryPoint'] as String,
       uiComponent: json['uiComponent'] as String?,
-      dataTypes: List<String>.from(json['dataTypes'] as List),
-      permissions: List<String>.from(json['permissions'] as List),
-      dependencies: Map<String, String>.from(json['dependencies'] as Map),
+      dataTypes: List<String>.from(json['dataTypes'] ?? []),
+      permissions: List<String>.from(json['permissions'] ?? []),
+      dependencies: Map<String, String>.from(json['dependencies'] ?? {}),
     );
-  }
-
-  static Future<PluginManifest> fromIpfs(String pluginCid) async {
-    // In a real app, this would fetch from IPFS
-    // For now, simulate with asset bundle
-    final manifestStr = await rootBundle.loadString('assets/mock_manifest.json');
-    final json = jsonDecode(manifestStr) as Map<String, dynamic>;
-    return PluginManifest.fromJson(json);
   }
 }
