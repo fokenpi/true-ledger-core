@@ -1,0 +1,11 @@
+{
+  "name": "IFRS Accounting",
+  "version": "1.0.0",
+  "description": "Double-entry ledger with IFRS compliance",
+  "author": "True Ledger Community",
+  "entryPoint": "index.js",
+  "uiComponent": "accounting_ui.js",
+  "dataTypes": ["Transaction", "Account", "JournalEntry"],
+  "permissions": ["ipld:write", "pubsub:/true-ledger/accounting"],
+  "dependencies": {}
+}
