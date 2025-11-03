@@ -1,10 +1,12 @@
 // lib/services/plugin_loader.dart
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../models/plugin_manifest.dart';
 import 'ipfs_service.dart';
+import 'plugin_verifier.dart';
 
 class PluginLoader {
   final String pluginCid;
@@ -41,32 +43,45 @@ class PluginLoader {
     await _controllerCompleter.future;
 
     try {
-      // 1. Fetch manifest from IPFS
+      // 1. Fetch manifest, signature, and public key from IPFS
       final manifestJson = await ipfsService.fetchJson('$pluginCid/manifest.json');
+      final signature = (await ipfsService.fetchText('$pluginCid/signature.sig')).trim();
+      final publicKey = (await ipfsService.fetchText('$pluginCid/public.key')).trim();
+
+      // 2. Verify plugin signature
+      if (!PluginVerifier.verifySignature(
+        manifest: manifestJson,
+        signatureBase64: signature,
+        publicKeyBase64: publicKey,
+      )) {
+        throw Exception('Plugin signature verification failed for $pluginCid');
+      }
+
+      // 3. Parse manifest
       final manifest = PluginManifest.fromJson(manifestJson);
 
-      // 2. Fetch plugin entry point (e.g., index.js)
+      // 4. Fetch plugin entry point (e.g., index.js)
       final pluginCode = await ipfsService.fetchText('$pluginCid/${manifest.entryPoint}');
 
-      // 3. Execute plugin in isolated context
+      // 5. Execute plugin in isolated context
       await _webViewController.runJavaScript('''
         (function() {
           try {
-            const pluginCode = `${pluginCode.replaceAll('`', '\\`')}`;
-            (0, eval)(pluginCode);
+            const code = `${pluginCode.replaceAll('`', '\\`')}`;
+            (0, eval)(code);
           } catch (e) {
             window.FlutterBridge.postMessage(JSON.stringify({
               type: 'pluginError',
               error: e.message,
-              stack: e.stack
+              stack: e.stack?.toString() || ''
             }));
           }
         })();
       ''');
 
-      debugPrint('✅ Plugin loaded: ${manifest.name} ($pluginCid)');
+      debugPrint('✅ Trusted plugin loaded: ${manifest.name} ($pluginCid)');
     } catch (e, stack) {
-      debugPrint('❌ Failed to load plugin $pluginCid: $e\n$stack');
+      debugPrint('❌ Plugin load failed: $e\n$stack');
     }
   }
 
@@ -77,8 +92,8 @@ class PluginLoader {
 
       switch (type) {
         case 'registerRoute':
-          // Forward to app router (implement in your main app)
           debugPrint('Plugin requests route: ${data['path']}');
+          // Forward to app router (implement in main app)
           break;
         case 'pluginError':
           debugPrint('Plugin runtime error: ${data['error']}');
@@ -87,7 +102,7 @@ class PluginLoader {
           debugPrint('Unknown plugin message: $message');
       }
     } catch (e) {
-      debugPrint('Invalid plugin message format: $message');
+      debugPrint('Invalid plugin message: $message');
     }
   }
 }
