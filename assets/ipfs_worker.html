@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/ipfs@0.60.0/dist/index.min.js"></script>
+</head>
+<body>
+<script>
+let node; async function init() {
+  if (node) return node;
+  node = await Ipfs.create({ repo: 'tlc' });
+  return node;
+}
+window.ipfs = {
+  addJson: async (obj) => {
+    const n = await init();
+    return (await n.add(JSON.stringify(obj))).cid.toString();
+  }
+};
+</script>
+</body>
+</html>
+EOF# Add IPFS asset
+mkdir -p assets
+cat > assets/ipfs_worker.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8">
+<script src="https://cdn.jsdelivr.net/npm/ipfs@0.60.0/dist/index.min.js"></script>
+</head>
+<body>
+<script>
+let node; async function init() {
+  if (node) return node;
+  node = await Ipfs.create({ repo: 'tlc' });
+  return node;
+}
+window.ipfs = {
+  addJson: async (obj) => {
+    const n = await init();
+    return (await n.add(JSON.stringify(obj))).cid.toString();
+  }
+};
+</script>
+</body>
+</html>
