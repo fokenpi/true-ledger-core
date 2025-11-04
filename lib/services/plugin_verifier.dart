@@ -12,25 +12,25 @@ class PluginVerifier {
     required String publicKeyBase64,
   }) {
     try {
-      // 1. Canonicalize manifest (sort keys, no whitespace)
+      // Canonicalize manifest
       final canonical = _canonicalJson(manifest);
       
-      // 2. Hash the manifest
+      // Hash the manifest
       final digest = SHA256Digest().process(utf8.encode(canonical));
       
-      // 3. Decode public key
+      // Decode public key
       final pubBytes = base64Decode(publicKeyBase64);
       final ecParams = ECCurve_secp256k1();
       final pubKey = ECPublicKey(ecParams.curve.decodePoint(pubBytes), ecParams);
       
-      // 4. Decode signature
+      // Decode signature
       final sigBytes = base64Decode(signatureBase64);
       final half = sigBytes.length ~/ 2;
       final r = _bytesToBigInt(sigBytes.sublist(0, half));
       final s = _bytesToBigInt(sigBytes.sublist(half));
       final signature = ECSignature(r, s);
       
-      // 5. Verify
+      // Verify
       final verifier = ECDSASigner(null, HMac(SHA256Digest(), 32));
       verifier.init(false, PublicKeyParameter(pubKey));
       return verifier.verifySignature(digest, signature);
@@ -41,7 +41,6 @@ class PluginVerifier {
   }
 
   static String _canonicalJson(Map<String, dynamic> data) {
-    // Simple canonicalization: sorted keys, no extra spaces
     final buffer = StringBuffer();
     buffer.write('{');
     final keys = data.keys.toList()..sort();
