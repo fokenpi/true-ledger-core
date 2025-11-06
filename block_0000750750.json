@@ -1,0 +1,9 @@
+{
+  "index": 1,
+  "timestamp": 1730910000,
+  "merkle_root": "9f88e9f02bf53acfa37cba4c6613ca54bb71251acf5a8c5389185625afddefd6",
+  "previous_hash": "0000545694feabf9de1a53aadcf8ec339870efb67b8b026cb5c7756690c94f81",
+  "nonce": 6244,
+  "difficulty": 4,
+  "transactions_count": 5
+}

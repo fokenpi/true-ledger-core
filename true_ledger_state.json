@@ -1,0 +1,64 @@
+{
+  "chain": [
+    {
+      "index": 0,
+      "timestamp": 1730908800,
+      "merkle_root": "",
+      "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "nonce": 6071,
+      "difficulty": 4,
+      "transactions_count": 0,
+      "transactions": [
+        {
+          "from_did": "Genesis",
+          "to_did": "did:key:z6MkvpRfaitZSdUc7DnysSGh9HL5bEZmDTh8WHqg6KQ5CYdj",
+          "amount": 1000,
+          "timestamp": 1730908700
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "timestamp": 1762448015,
+      "merkle_root": "b682515026208dc6a0f5a545b81618894936f8a163d86d97dee7829f0338687d",
+      "previous_hash": "5286d528a32a81948dd39b5380744b96b3aa9db9fd3e0944250b56c38e9268bd",
+      "nonce": 18716,
+      "difficulty": 4,
+      "transactions_count": 5,
+      "transactions": [
+        {
+          "from_did": "did:key:z6MkvpRfaitZSdUc7DnysSGh9HL5bEZmDTh8WHqg6KQ5CYdj",
+          "to_did": "did:key:z6Mkk7pLq4eYfW3yVw6jJv",
+          "amount": 100,
+          "timestamp": 1730909400
+        },
+        {
+          "from_did": "did:key:z6MkvpRfaitZSdUc7DnysSGh9HL5bEZmDTh8WHqg6KQ5CYdj",
+          "to_did": "did:key:z6Mkk7pLq4eYfW3yVw6jJv",
+          "amount": 101,
+          "timestamp": 1730909401
+        },
+        {
+          "from_did": "did:key:z6MkvpRfaitZSdUc7DnysSGh9HL5bEZmDTh8WHqg6KQ5CYdj",
+          "to_did": "did:key:z6Mkk7pLq4eYfW3yVw6jJv",
+          "amount": 102,
+          "timestamp": 1730909402
+        },
+        {
+          "from_did": "did:key:z6MkvpRfaitZSdUc7DnysSGh9HL5bEZmDTh8WHqg6KQ5CYdj",
+          "to_did": "did:key:z6Mkk7pLq4eYfW3yVw6jJv",
+          "amount": 103,
+          "timestamp": 1730909403
+        },
+        {
+          "from_did": "did:key:z6MkvpRfaitZSdUc7DnysSGh9HL5bEZmDTh8WHqg6KQ5CYdj",
+          "to_did": "did:key:z6Mkk7pLq4eYfW3yVw6jJv",
+          "amount": 104,
+          "timestamp": 1730909404
+        }
+      ]
+    }
+  ],
+  "difficulty": 4,
+  "transactions_pool": []
+}
